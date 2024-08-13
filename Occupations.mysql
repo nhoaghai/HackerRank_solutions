@@ -1,0 +1,15 @@
+SELECT 
+    GROUP_CONCAT(CASE WHEN occupation = 'doctor' THEN name ELSE NULL END) AS Doctor,
+    GROUP_CONCAT(CASE WHEN occupation = 'professor' THEN name ELSE NULL END) AS Professor,
+    GROUP_CONCAT(CASE WHEN occupation = 'singer' THEN name ELSE NULL END) AS Singer,
+    GROUP_CONCAT(CASE WHEN occupation = 'actor' THEN name ELSE NULL END) AS Actor
+FROM
+(
+    SELECT ROW_NUMBER() OVER (PARTITION BY occupation ORDER BY name) AS id ,name, occupation
+    /*
+    tạo bảng mới gồm 3 trường id, name, occupation chia theo occupation và đánh id
+    */
+    FROM occupations
+) as occupations_with_id
+-- tạo bảng mới có tên occupation_with_id
+GROUP BY id;
