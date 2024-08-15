@@ -1,0 +1,11 @@
+SELECT N,
+CASE
+    -- There is no parent
+    WHEN P IS NULL THEN ' Root'
+    -- At least one node has this node as a parent
+    WHEN N IN (SELECT DISTINCT(P) FROM BST) THEN ' Inner'
+    -- Not a parent and no nodes have this as a parent
+    ELSE ' Leaf'
+END
+FROM BST 
+ORDER BY N
